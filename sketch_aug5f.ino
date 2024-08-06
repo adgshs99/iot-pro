@@ -55,7 +55,7 @@ void checkAndUpdateServer() {
       int serverValue = payload.toInt();
 
       if (LastPressTime < serverValue) {
-        setLEDColor(0, 255, 255); // צבע תכלת טורקיז (ערכים עבור ר, ג, וכחול)
+        setLEDColor(0, 255, 255); 
         String url = "http://api.kits4.me/GEN/api.php?ACT=SET&DEV=11&CH=1&VAL=" + String(LastPressTime);
         http.begin(client, url);
         int setHttpCode = http.GET();
@@ -76,10 +76,10 @@ void checkAndUpdateServer() {
   }
 }
 
-void setLEDColor(int red, int green, int blue) { // הוספת כחול לפונקציה
+void setLEDColor(int red, int green, int blue) { 
   analogWrite(redLedPin, red);
   analogWrite(greenLedPin, green);
-  analogWrite(blueLedPin, blue); // הוספת שליטה בכחול
+  analogWrite(blueLedPin, blue); 
 }
 
 void recordPress(unsigned long pressTime) {
