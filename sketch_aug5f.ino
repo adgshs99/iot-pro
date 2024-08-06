@@ -2,9 +2,8 @@
 #include <ESP8266HTTPClient.h>
 
 #define btnPin D5
-#define redLedPin D2
-#define greenLedPin D1
-#define blueLedPin D3 
+#define redPin D7
+#define greenPin D6
 
 int lastVal;
 unsigned long LastPressTime;
@@ -12,13 +11,11 @@ unsigned long pressTimes[10];
 int pressIndex = 0;
 
 WiFiClient client; 
-
 void setup() {
-  Serial.begin(9600); 
+  // Serial.begin(9600); // 
   pinMode(btnPin, INPUT_PULLUP);
-  pinMode(redLedPin, OUTPUT);
-  pinMode(greenLedPin, OUTPUT);
-  pinMode(blueLedPin, OUTPUT); // הגדרת פין כחול כיציאה
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
 
   LastPressTime = millis();
   lastVal = digitalRead(btnPin);
@@ -55,7 +52,7 @@ void checkAndUpdateServer() {
       int serverValue = payload.toInt();
 
       if (LastPressTime < serverValue) {
-        setLEDColor(0, 255, 255); 
+        setLEDColor(0, 255); // תכלת טורקיז )(אין לי כצבע כחול נעשה עם ירוק ואדום)
         String url = "http://api.kits4.me/GEN/api.php?ACT=SET&DEV=11&CH=1&VAL=" + String(LastPressTime);
         http.begin(client, url);
         int setHttpCode = http.GET();
@@ -66,7 +63,7 @@ void checkAndUpdateServer() {
           Serial.println("Failed to update server");
         }
       } else {
-        setLEDColor(255, 100, 0); // צבע כתום
+        setLEDColor(255, 100); // כתום
       }
     } else {
       Serial.println("Failed to retrieve data from server");
@@ -76,10 +73,9 @@ void checkAndUpdateServer() {
   }
 }
 
-void setLEDColor(int red, int green, int blue) { 
-  analogWrite(redLedPin, red);
-  analogWrite(greenLedPin, green);
-  analogWrite(blueLedPin, blue); 
+void setLEDColor(int red, int green) {
+  analogWrite(redPin, red);
+  analogWrite(greenPin, green);
 }
 
 void recordPress(unsigned long pressTime) {
@@ -103,7 +99,6 @@ void SendBtnPressed(unsigned long pressTime) {
     http.end();
   }
 }
-
 
 
 
