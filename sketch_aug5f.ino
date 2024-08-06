@@ -52,7 +52,7 @@ void checkAndUpdateServer() {
       int serverValue = payload.toInt();
 
       if (LastPressTime < serverValue) {
-        setLEDColor(0, 255); // תכלת טורקיז )(אין לי כצבע כחול נעשה עם ירוק ואדום)
+        setLEDColor(0, 255); // תכלת טורקיז )(עם ירוק ואדום)
         String url = "http://api.kits4.me/GEN/api.php?ACT=SET&DEV=11&CH=1&VAL=" + String(LastPressTime);
         http.begin(client, url);
         int setHttpCode = http.GET();
