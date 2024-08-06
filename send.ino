@@ -10,7 +10,6 @@ extern WiFiClient client;
 int server_port = 80; 
 
 void wifiClient_Setup() {
-    Serial.begin(9600);
   Serial.println("wifiSetup");
   WiFi.begin(ssid);
   while (WiFi.status() != WL_CONNECTED) {
@@ -18,9 +17,8 @@ void wifiClient_Setup() {
     delay(100);
   }
   Serial.println("Connected to network");
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
 }
+
 
 
 
