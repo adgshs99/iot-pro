@@ -1,9 +1,10 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-#define btnPin D5
-#define redPin D7
-#define greenPin D6
+#define btnPin D2
+#define redPin D6
+#define greenPin D7
+#define bluePin D5
 
 int lastVal;
 unsigned long LastPressTime;
@@ -16,6 +17,7 @@ void setup() {
   pinMode(btnPin, INPUT_PULLUP);
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
+   pinMode(bluePin, OUTPUT);
 
   LastPressTime = millis();
   lastVal = digitalRead(btnPin);
@@ -52,7 +54,7 @@ void checkAndUpdateServer() {
       int serverValue = payload.toInt();
 
       if (LastPressTime < serverValue) {
-        setLEDColor(0, 255); // תכלת טורקיז )(עם ירוק ואדום)
+        setLEDColor(0, 255, 255); // תכלת טורקיז
         String url = "http://api.kits4.me/GEN/api.php?ACT=SET&DEV=11&CH=1&VAL=" + String(LastPressTime);
         http.begin(client, url);
         int setHttpCode = http.GET();
@@ -63,7 +65,7 @@ void checkAndUpdateServer() {
           Serial.println("Failed to update server");
         }
       } else {
-        setLEDColor(255, 100); // כתום
+        setLEDColor(255, 165, 0); // כתום
       }
     } else {
       Serial.println("Failed to retrieve data from server");
@@ -73,9 +75,10 @@ void checkAndUpdateServer() {
   }
 }
 
-void setLEDColor(int red, int green) {
+void setLEDColor(int red, int green, int blue) {
   analogWrite(redPin, red);
   analogWrite(greenPin, green);
+  analogWrite(bluePin, blue);
 }
 
 void recordPress(unsigned long pressTime) {
